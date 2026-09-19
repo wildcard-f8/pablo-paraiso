@@ -68,7 +68,7 @@ var LOG_COLUMNS = [
  */
 function doPost(e) {
   // Handle CORS preflight (OPTIONS) requests
-  if (e.parameter.method === 'OPTIONS') {
+  if (e && e.parameter && e.parameter.method === 'OPTIONS') {
     return createJsonResponse(200, {});
   }
 
@@ -160,7 +160,7 @@ function doPost(e) {
  */
 function doGet(e) {
   // Handle CORS preflight (OPTIONS) requests
-  if (e.parameter.method === 'OPTIONS') {
+  if (e && e.parameter && e.parameter.method === 'OPTIONS') {
     return createJsonResponse(200, {});
   }
 
