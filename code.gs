@@ -75,12 +75,19 @@ function doPost(e) {
   var clientIP = e.parameter.ip || (e.headers && e.headers["X-Forwarded-For"]) || "unknown";
 
   try {
-    // Parse the incoming JSON payload
+    // Parse the incoming payload — handle both JSON and URL-encoded data
+    // When the browser sends application/x-www-form-urlencoded (to avoid CORS
+    // preflight), e.postData.contents is URL-encoded, not JSON.
     var data;
-    if (typeof e.postData.contents === "string" && e.postData.contents) {
-      data = JSON.parse(e.postData.contents);
+    if (e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (jsonError) {
+        // Not JSON (e.g. URL-encoded form data) — fall back to e.parameter
+        data = e.parameter || {};
+      }
     } else {
-      data = e.parameter;
+      data = e.parameter || {};
     }
 
     // ─── Activity Log: Request received ───
