@@ -70,9 +70,18 @@ This guide walks you through setting up the Google Apps Script (GAS) backend tha
    - **Execute as**: "Me" (your Google account)
    - **Who has access**: "Anyone" (this allows website visitors to submit bookings)
 4. Click **Deploy**.
-5. **Authorize** the script when prompted — you will need to grant permission for:
-   - Google Calendar (read events, create events)
-   - Google Sheets (read/write data)
+5. **Authorize the script** — this step is critical and must be done manually:
+   - In the Apps Script editor, select `doGet` from the **functions dropdown** (top toolbar)
+   - Click the **Run** button (▶ icon)
+   - The authorization dialog will appear — click **Review Permissions**
+   - Select your Google account
+   - You may see "This app isn't verified" — click **Advanced** → **Go to [project name] (unsafe)**
+   - Grant access to:
+     - **Google Calendar** (read events, create events)
+     - **Google Sheets** (read/write data)
+   - Click **Allow**
+   - **Note**: You will only need to do this once per Google account. The authorization
+     prompt does NOT appear during deployment — it appears only when the script runs.
 6. After deployment, you will receive a **Web app URL** that looks like:
    ```
    https://script.google.com/macros/s/AKfy8aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567/exec
