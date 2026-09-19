@@ -173,6 +173,16 @@ Every single interaction is logged in the **ActivityLog** tab of your Google She
   `connect.facebook.net`).
 - The plugin may take up to 24 hours to activate after whitelisting (rarely instantly).
 
+### "TypeError: output.setHeader is not a function"
+
+- This error occurs when `createJsonResponse` tries to call `setHeader()` on a
+  `TextOutput` object returned by `ContentService.createTextOutput()`.
+  That method does not exist on `TextOutput`.
+- **Fix**: Ensure you are using the latest `code.gs` from this repository.
+  The `createJsonResponse` function should NOT call `setHeader()`.
+  Google Apps Script web apps handle CORS automatically when deployed with
+  "Anyone" access — manual header setting is unnecessary.
+
 ### Calendar checks are slow (3+ seconds)
 - Google Apps Script has a 6-minute execution limit, but individual API calls may take
   time. The script is optimized to check availability before creating events, which
