@@ -64,8 +64,14 @@ var LOG_COLUMNS = [
 /**
  * Handles POST requests from the booking form.
  * Checks calendar availability, creates events, logs to sheets.
+ * Also handles OPTIONS preflight requests for CORS.
  */
 function doPost(e) {
+  // Handle CORS preflight (OPTIONS) requests
+  if (e.parameter.method === 'OPTIONS') {
+    return createJsonResponse(200, {});
+  }
+
   var clientIP = e.parameter.ip || (e.headers && e.headers["X-Forwarded-For"]) || "unknown";
 
   try {
@@ -150,8 +156,14 @@ function doPost(e) {
 
 /**
  * Handles GET requests — returns a simple status check for monitoring.
+ * Also handles OPTIONS preflight requests for CORS.
  */
 function doGet(e) {
+  // Handle CORS preflight (OPTIONS) requests
+  if (e.parameter.method === 'OPTIONS') {
+    return createJsonResponse(200, {});
+  }
+
   return createJsonResponse(200, {
     status: "ok",
     service: "Pablo Paraiso Booking System",
@@ -414,25 +426,14 @@ function logActivity(action, status, data, details, clientIP) {
 
 /**
  * Creates a standard JSON response for the web app.
+ * Note: Google Apps Script web apps deployed with "Anyone" access
+ * automatically handle CORS headers. Manual setHeader() is not
+ * supported on TextOutput objects.
  */
 function createJsonResponse(statusCode, body) {
-  var headers = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type"
-  };
-
-  var output = ContentService
+  return ContentService
     .createTextOutput(JSON.stringify(body))
     .setMimeType(ContentService.MimeType.JSON);
-
-  // Set CORS headers
-  for (var key in headers) {
-    output.setHeader(key, headers[key]);
-  }
-
-  return output;
 }
 
 // ─── Utility ────────────────────────────────────────────────────
