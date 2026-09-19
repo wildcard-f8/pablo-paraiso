@@ -1,0 +1,32 @@
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build / Cache
+node_modules/
+dist/
+build/
+.cache/
+*.log
+
+# Sensitive Credentials (extra safety — never commit these)
+secrets.json
+credentials.json
+config.json
+*.secret
+*.token

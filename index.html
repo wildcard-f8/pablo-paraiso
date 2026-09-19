@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Pablo Paraiso — A luxury lakeside pool house in the Philippines. Perfect for pool parties, team building events, and private gatherings. Book your summer retreat today."/>
+  <title>Pablo Paraiso · Lakeside Pool House Retreat</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon: uses the transparent main logo -->
+  <link rel="icon" href="assets/img/logo_transparent.png?v=2" type="image/png" sizes="any">
+  <link rel="apple-touch-icon" href="assets/img/logo_transparent.png?v=2" sizes="180x180">
+
+  <!-- Bootstrap Icons (for UI icons throughout the page) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    /* ──────────── Design Tokens — Summer Lakeside Barbecue ──────────── */
+    :root {
+      --water-blue:    #0077BE;   /* Lakeside water — primary */
+      --sunset-orange: #FF6B35;   /* Evening sunset / barbecue — secondary */
+      --lounge-green:  #4CAF50;   /* Lush greenery — accent */
+      --sand-beige:    #F4D6A3;   /* Warm sand — soft accent */
+      --sky-blue:      #87CEEB;   /* Sky — light accent */
+
+      --bg:            #F0F8FA;   /* Very light blue water's edge */
+      --surface:       #FFFFFF;   /* Clean white cards */
+      --ink:           #1A1A2E;   /* Deep navy text */
+      --ink-muted:     #64748B;   /* Cool gray text */
+      --border:        #E2E8F0;   /* Light gray borders */
+
+      --accent-gradient: linear-gradient(135deg, var(--water-blue), var(--sunset-orange));
+      --shadow:        0 4px 20px rgba(26, 26, 46, 0.05);
+      --shadow-hover:  0 12px 32px rgba(26, 26, 46, 0.12);
+      --shadow-card:   0 8px 24px rgba(0, 119, 190, 0.08);
+
+      --radius:        20px;
+      --radius-sm:     12px;
+      --radius-full:   999px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    ul { list-style: none; margin: 0; padding: 0; }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      margin: 0 0 .5rem;
+      line-height: 1.15;
+    }
+    h1 { font-size: clamp(2.2rem, 5vw, 3rem); }
+    h2 { font-size: clamp(1.75rem, 4vw, 2.25rem); }
+    h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+    p { margin: 0 0 1rem; }
+
+    .container {
+      width: min(90%, 1180px);
+      margin-inline: auto;
+      padding-block: 3rem;
+    }
+
+    :where(.btn) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      padding: .85rem 2rem;
+      font-size: 1rem;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+    }
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 119, 190, 0.35);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--surface);
+      color: var(--surface);
+    }
+    .btn-outline:hover {
+      background: var(--surface);
+      color: var(--water-blue);
+    }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+    }
+    .btn-secondary:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* ──────────── Header ──────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 1rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .logo-img {
+      height: 80px;
+      width: auto;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+    }
+    .logo-text {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .logo-text .water { color: var(--water-blue); }
+    .logo-text .sunset { color: var(--sunset-orange); }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav a {
+      color: var(--ink);
+      font-weight: 500;
+      font-size: .95rem;
+      transition: color .2s;
+      position: relative;
+    }
+    .nav a:hover { color: var(--water-blue); }
+    .nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--sunset-orange);
+      transition: width .25s;
+    }
+    .nav a:hover::after { width: 100%; }
+    .hero-cta .btn-outline {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .hero-cta .btn-outline:hover {
+      background: rgba(0, 0, 0, 0.55);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 119, 190, 0.35);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      width: 34px;
+    }
+    .hamburger span {
+      height: 2.5px;
+      background: var(--ink);
+      border-radius: 9px;
+      transition: .2s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+    /* ──────────── Hero ──────────── */
+    .hero {
+      background-image: url('assets/img/hero-pool.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      border-radius: 0 0 var(--radius) var(--radius);
+      margin-top: 1.5rem;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(26, 26, 46, 0.85) 0%, rgba(26, 26, 46, 0.4) 35%, rgba(255, 107, 53, 0.15) 60%, transparent 80%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      padding-left: 2rem;
+      padding-bottom: 1rem;
+    }
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 5.5vw, 3.5rem);
+      color: var(--surface);
+      line-height: 1.05;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      margin-bottom: 1rem;
+    }
+    .hero-content .water-accent { color: var(--sky-blue); }
+    .hero-content .sunset-accent { color: var(--sand-beige); }
+    .hero-content p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 34rem;
+      margin-bottom: 1.75rem;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 2rem;
+    }
+    .hero-tag {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-sm);
+      padding: .4rem .9rem;
+      font-size: .85rem;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+
+    /* ──────────── Sections ──────────── */
+    section { padding-block: 4rem 2.5rem; }
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-title h2 {
+      font-size: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--accent-gradient);
+      border-radius: 2px;
+    }
+    .section-title p { color: var(--ink-muted); max-width: 640px; margin-inline: auto; }
+
+    /* ──────────── Stats ──────────── */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: .5rem 1.25rem;
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .stat .num {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--water-blue);
+    }
+
+    /* ──────────── About ──────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .about-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    .about-text { padding: 2.5rem; }
+    .about-text h2 { text-align: left; font-size: 1.75rem; }
+    .about-text h2::after { display: none; }
+    .about-text .badge {
+      display: inline-block;
+      background: color-mix(in srgb, var(--water-blue) 10%, transparent);
+      color: var(--water-blue);
+      border-radius: var(--radius-sm);
+      padding: .3rem .8rem;
+      font-size: .8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .about-list {
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+    }
+    .about-list li {
+      display: flex;
+      flex-direction: column;
+      padding: .85rem 1rem;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--sunset-orange);
+    }
+    .about-list strong { font-size: .9rem; color: var(--ink); }
+    .about-list span { font-size: .82rem; color: var(--ink-muted); }
+
+    /* ──────────── Amenities Grid ──────────── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      transition: transform .15s, box-shadow .18s, border-color .18s;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: color-mix(in srgb, var(--water-blue) 40%, var(--border));
+    }
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+      background: color-mix(in srgb, var(--water-blue) 8%, transparent);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid color-mix(in srgb, var(--water-blue) 15%, transparent);
+    }
+    .service-icon i {
+      font-size: 1.75rem;
+      color: var(--water-blue);
+    }
+    .service-card h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+    .service-card p { color: var(--ink-muted); font-size: .85rem; }
+
+    /* ──────────── Horizontal Scroll Sections (Gallery + Testimonials) ──────────── */
+    .track-wrapper {
+      position: relative;
+    }
+    .gallery-track, .testimonial-track {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 1.25rem 3rem;
+      scrollbar-width: none; /* Hide scrollbar (Firefox) */
+      -ms-overflow-style: none;  /* Hide scrollbar (IE/Edge) */
+      scroll-behavior: smooth;
+    }
+    .gallery-track::-webkit-scrollbar,
+    .testimonial-track::-webkit-scrollbar {
+      display: none; /* Hide scrollbar (WebKit/Blink) */
+    }
+
+    /* Scroll Navigation Buttons */
+    .scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow);
+      color: var(--ink);
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .2s ease;
+      flex-shrink: 0;
+    }
+    .scroll-btn:hover {
+      background: var(--water-blue);
+      color: var(--surface);
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: 0 8px 24px rgba(0, 119, 190, 0.35);
+    }
+    .scroll-btn.left { left: -0.75rem; }
+    .scroll-btn.right { right: -0.75rem; }
+    .scroll-btn:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+      transform: translateY(-50%);
+    }
+    .gallery-card {
+      flex: 0 0 320px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+    }
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+    .gallery-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-card .info {
+      padding: 1.25rem;
+      background: var(--surface);
+    }
+    .gallery-card .info h4 { font-size: 1rem; text-align: left; }
+    .gallery-card .info span { font-size: .8rem; color: var(--ink-muted); }
+
+    /* ──────────── Packages ──────────── */
+    .packages {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .package-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      transition: transform .15s, box-shadow .18s, border-color .18s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%; /* Stretch to fill grid cell */
+    }
+    .package-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: color-mix(in srgb, var(--water-blue) 40%, var(--border));
+    }
+    .package-card.popular {
+      border-color: var(--water-blue);
+      background: color-mix(in srgb, var(--water-blue) 4%, transparent);
+    }
+    .package-card.popular .popular-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--sunset-orange);
+      color: var(--surface);
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .3rem .9rem;
+      border-radius: 0 0 6px 6px;
+    }
+    .package-card h3 { font-size: 1.25rem; margin-bottom: .5rem; }
+    .package-card .price {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--water-blue);
+      margin: 1.25rem 0;
+    }
+    .package-card .price .small {
+      font-size: 1rem;
+      color: var(--ink-muted);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+    }
+    .package-features {
+      list-style: none;
+      text-align: left;
+      margin: 1.5rem 0;
+      flex: 1; /* Expand to fill space, pushing button to bottom */
+    }
+    .package-features li {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .6rem;
+      font-size: .9rem;
+    }
+    .package-features li i {
+      color: var(--lounge-green);
+      font-size: 1.1rem;
+    }
+    .package-card .duration {
+      font-size: .85rem;
+      color: var(--ink-muted);
+      margin-top: 1rem;
+    }
+
+    /* Pricing Details */
+    .pricing-details {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .detail-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      text-align: center;
+      transition: transform .15s, box-shadow .18s, border-color .18s;
+    }
+    .detail-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: color-mix(in srgb, var(--water-blue) 40%, var(--border));
+    }
+    .detail-amount {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--water-blue);
+      margin-bottom: .25rem;
+    }
+    .detail-label {
+      font-size: .85rem;
+      color: var(--ink-muted);
+    }
+
+    /* ──────────── Location ──────────── */
+    .location-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+    }
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .map-wrapper {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .map-wrapper iframe {
+      width: 100%;
+      height: 400px;
+      border: 0;
+      display: block;
+    }
+    .location-details h3 { text-align: left; }
+    .location-details .detail {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      margin-bottom: 1rem;
+      font-size: .95rem;
+    }
+    .location-details .detail i {
+      color: var(--water-blue);
+      font-size: 1.2rem;
+      margin-top: .1rem;
+    }
+    .location-details .detail .info { display: flex; flex-direction: column; }
+    .location-details .detail .label {
+      font-weight: 600;
+      color: var(--ink);
+      font-size: .85rem;
+    }
+    .location-details .detail .value {
+      color: var(--ink-muted);
+      font-size: .95rem;
+    }
+
+    /* ──────────── Contact / Booking ──────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .contact-info h3 { text-align: left; }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .contact-item i {
+      color: var(--water-blue);
+      font-size: 1.4rem;
+      margin-top: .1rem;
+    }
+    .contact-item .info { display: flex; flex-direction: column; }
+    .contact-item .label { font-weight: 600; color: var(--ink); font-size: .9rem; }
+    .contact-item .value { color: var(--ink-muted); font-size: .95rem; }
+
+    .booking-form h3 { text-align: left; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-row .form-group { margin-bottom: 0; }
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: .4rem;
+      color: var(--ink);
+      font-size: .9rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: .8rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Poppins', sans-serif;
+      font-size: .95rem;
+      background: var(--bg);
+      transition: border-color .2s, background .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--water-blue);
+      background: var(--surface);
+    }
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .form-success {
+      display: none;
+      background: color-mix(in srgb, var(--lounge-green) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--lounge-green) 30%, var(--border));
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      gap: .75rem;
+      font-weight: 500;
+      color: color-mix(in srgb, var(--lounge-green) 40%, var(--ink));
+    }
+    .form-success i { font-size: 1.5rem; color: var(--lounge-green); }
+    .form-row.three-cols {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .form-error {
+      display: none;
+      background: color-mix(in srgb, #e53935 10%, transparent);
+      border: 1px solid color-mix(in srgb, #e53935 30%, var(--border));
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      gap: .75rem;
+      font-weight: 500;
+      color: color-mix(in srgb, #e53935 40%, var(--ink));
+    }
+    .form-error i { font-size: 1.5rem; color: #e53935; }
+
+    /* ──────────── Testimonials ──────────── */
+    .testimonial {
+      flex: 0 0 360px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .testimonial .quote {
+      font-style: italic;
+      color: var(--ink-muted);
+      margin-bottom: 1.25rem;
+      font-size: .95rem;
+      position: relative;
+    }
+    .testimonial .quote::before {
+      content: """;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 4rem;
+      color: color-mix(in srgb, var(--water-blue) 20%, transparent);
+      position: absolute;
+      top: -20px;
+      left: -8px;
+      line-height: 1;
+    }
+    .testimonial .author {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      justify-content: center;
+    }
+    .testimonial .author-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+    .testimonial .author-name {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .testimonial .author-role {
+      font-size: .8rem;
+      color: var(--ink-muted);
+    }
+
+    /* ──────────── Footer ──────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255, 255, 255, 0.7);
+      padding-block: 3rem;
+    }
+    .footer-inner {
+      width: min(90%, 1180px);
+      margin-inline: auto;
+      text-align: center;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      margin-bottom: 1.5rem;
+    }
+    .footer-logo img { height: 88px; }
+    .footer-logo-text {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--surface);
+    }
+    .footer-logo-text .water { color: var(--water-blue); }
+    .footer-logo-text .sunset { color: var(--sunset-orange); }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .9rem;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--sand-beige); }
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      transition: all .2s;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .footer-social a:hover {
+      background: var(--water-blue);
+      color: var(--surface);
+      transform: translateY(-2px);
+    }
+    .footer-bottom {
+      font-size: .82rem;
+      color: rgba(255, 255, 255, 0.45);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1.5rem;
+    }
+
+    /* ──────────── Back to Top ──────────── */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--accent-gradient);
+      color: var(--surface);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all .3s ease;
+      z-index: 90;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    /* ──────────── Mobile Nav (hidden on desktop) ──────────── */
+    .mobile-nav { display: none; }
+
+    /* ──────────── Responsive ──────────── */
+    @media (max-width: 768px) {
+      .about-grid,
+      .location-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-img,
+      .map-wrapper { height: 280px; }
+      .hero { min-height: 60vh; }
+      .hero-content { padding-left: 1rem; }
+      .hero-cta { flex-direction: column; }
+      .form-row, .form-row.three-cols { grid-template-columns: 1fr; }
+      .nav { display: none; }
+      .hamburger { display: flex; }
+      .mobile-nav {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(26, 26, 46, 0.95);
+        backdrop-filter: blur(12px);
+        z-index: 200;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 4rem 2rem;
+        transform: translateX(-100%);
+        transition: transform .3s ease;
+      }
+      .mobile-nav.active { transform: translateX(0); }
+      .mobile-nav a {
+        color: var(--surface);
+        font-size: 1.5rem;
+        font-weight: 500;
+        display: block;
+        text-align: center;
+      }
+      .mobile-nav .btn-primary { width: 100%; }
+      .mobile-close {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        font-size: 1.5rem;
+        color: var(--surface);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ──────────── Header ──────────── -->
+  <header>
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <img src="assets/img/logo_transparent.png" alt="Pablo Paraiso Logo" class="logo-img">
+      </a>
+      <nav class="nav">
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#amenities">Amenities</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#packages">Packages</a>
+          <a href="#testimonials">Reviews</a>
+        </div>
+      </nav>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <i class="bi bi-x-lg mobile-close" onclick="toggleMobileNav()"></i>
+    <a href="#about" onclick="toggleMobileNav()">About</a>
+    <a href="#amenities" onclick="toggleMobileNav()">Amenities</a>
+    <a href="#gallery" onclick="toggleMobileNav()">Gallery</a>
+    <a href="#packages" onclick="toggleMobileNav()">Packages</a>
+    <a href="#testimonials" onclick="toggleMobileNav()">Reviews</a>
+    <a href="#contact" onclick="toggleMobileNav()">Book Now</a>
+  </div>
+
+  <!-- ──────────── Hero ──────────── -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your <span class="water-accent">Lakeside</span> <span class="sunset-accent">Paradise</span></h1>
+      <p>Pablo Paraiso is a luxury pool house retreat nestled along the serene shores of Laguna de Bay. Perfect for unforgettable pool parties, energizing team building events, and sunset barbecues with friends and family.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Book Your Retreat</a>
+        <a href="#packages" class="btn btn-outline">View Packages</a>
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag"><i class="bi bi-clock"></i> Open Daily 9 AM – 9 PM</span>
+        <span class="hero-tag"><i class="bi bi-water"></i> Up to 30 Guests</span>
+        <span class="hero-tag"><i class="bi bi-award"></i> No Corkage Fee</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- ──────────── Stats ──────────── -->
+    <div class="stats-bar">
+      <div class="stat"><span class="num">30+</span> Guest Capacity</div>
+      <div class="stat"><i class="bi bi-star-fill" style="color: var(--sunset-orange);"></i> 4.9 Rating</div>
+      <div class="stat"><span class="num">200+</span> Events Hosted</div>
+      <div class="stat"><i class="bi bi-award" style="color: var(--lounge-green);"></i> Best Pool Venue 2025</div>
+    </div>
+
+    <!-- ──────────── About ──────────── -->
+    <section id="about">
+      <div class="section-title">
+        <h2>Your Summer Escape Awaits</h2>
+        <p>A luxury lakeside pool house designed for celebration, connection, and pure relaxation.</p>
+      </div>
+      <div class="about-grid">
+        <img src="assets/img/lounge.jpg" alt="Lounge area at Pablo Paraiso" class="about-img">
+        <div class="about-text">
+          <span class="badge">EST. 2024</span>
+          <h2>PABLO PARAISO</h2>
+          <p>Named after the Spanish phrase for "Paul's Paradise," Pablo Paraiso is a serene lakeside retreat where summer celebrations come to life. Our pool house sits on the gentle shores of Laguna de Bay, offering stunning water views, full amenities, and a carefully curated atmosphere for every occasion.</p>
+          <ul class="about-list">
+            <li><strong>Prime Location</strong><span>Just 30 minutes from Manila, nestled along the scenic shores of Laguna de Bay.</span></li>
+            <li><strong>Pool &amp; Villa</strong><span>Swimming pool (3ft–5ft depth) with a one-room villa featuring a private toilet and bathroom.</span></li>
+            <li><strong>All Amenities</strong><span>Two shower rooms, dining tables, grill, videoke, and lush garden grounds.</span></li>
+            <li><strong>Flexible Pricing</strong><span>6-hour and 10-hour packages starting at ₱4,000, plus custom event options.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────── Amenities ──────────── -->
+    <section id="amenities">
+      <div class="section-title">
+        <h2>Everything You Need</h2>
+        <p>Thoughtfully designed amenities for unforgettable experiences.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-water"></i>
+          </div>
+          <h3>Pool</h3>
+          <p>Swimming pool with depths ranging from 3ft to 5ft — perfect for both casual lounging and deep-end fun.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-house"></i>
+          </div>
+          <h3>Villa</h3>
+          <p>One-room villa with a private toilet and bathroom, ideal for changing, rest, or overnight accommodation.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-droplet"></i>
+          </div>
+          <h3>Shower Rooms</h3>
+          <p>Two clean shower rooms with hot and cold water, complete with towels and basic toiletries.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3>Tables</h3>
+          <p>Dining and event tables in various configurations, perfect for meals, meetings, or games.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-fire"></i>
+          </div>
+          <h3>Grill</h3>
+          <p>State-of-the-art charcoal and gas grills for your barbecue needs, with premium cuts available.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-music-note"></i>
+          </div>
+          <h3>Videoke</h3>
+          <p>Complete videoke setup with microphone, speaker system, and a wide selection of songs.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-tree"></i>
+          </div>
+          <h3>Garden</h3>
+          <p>Lush garden grounds surrounding the pool house, perfect for outdoor ceremonies or quiet relaxation.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-flag"></i>
+          </div>
+          <h3>Mini-Golf</h3>
+          <p>A fun 4-hole mini-golf course set amidst the gardens — perfect for friendly competitions and casual play.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────── Gallery ──────────── -->
+    <section id="gallery">
+      <div class="section-title">
+        <h2>Photo Gallery</h2>
+        <p>A visual journey through our lakeside paradise.</p>
+      </div>
+      <div class="track-wrapper">
+        <button class="scroll-btn left" id="galleryScrollLeft" aria-label="Scroll left">&#8249;</button>
+        <div class="gallery-track" id="galleryTrack">
+        <div class="gallery-card">
+          <img src="assets/img/gallery-3.jpg" alt="Mountain lake sunset view">
+          <div class="info">
+            <h4>Sunset Over the Lake</h4>
+            <span>Golden hour magic at Pablo Paraiso</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/img/gallery-1.jpg" alt="Luxury resort pool with palm trees">
+          <div class="info">
+            <h4>The Pool</h4>
+            <span>Our swimming pool with 3ft–5ft depth</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/img/sunset-lake.jpg" alt="Aerial view of lake with mountains">
+          <div class="info">
+            <h4>Panoramic Lake View</h4>
+            <span>Aerial perspective of our lakeside haven</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/img/gallery-4.jpg" alt="Lake at sunset with trees">
+          <div class="info">
+            <h4>Lakeside Dining</h4>
+            <span>Sunset barbecues by the water</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/img/gallery-2.jpg" alt="Pool with lounge chair and umbrella">
+          <div class="info">
+            <h4>Lounge & Relax</h4>
+            <span>Cabanas and daybeds by the pool</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/img/barbecue.jpg" alt="Group of people around a grill">
+          <div class="info">
+            <h4>Community Barbecue</h4>
+            <span>Friends and family gathering around the grill</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/img/pool-party.jpg" alt="Lounge chairs by the pool">
+          <div class="info">
+            <h4>Summer Pool Party</h4>
+            <span>Daybeds and umbrellas by the water</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/img/team-building.jpg" alt="Pool next to lush green hillside">
+          <div class="info">
+            <h4>Team Retreat</h4>
+            <span>Event spaces with lakeside backdrop</span>
+          </div>
+        </div>
+      </div>
+        <button class="scroll-btn right" id="galleryScrollRight" aria-label="Scroll right">&#8250;</button>
+      </div>
+    </section>
+
+    <!-- ──────────── Packages / Pricing ──────────── -->
+    <section id="packages">
+      <div class="section-title">
+        <h2>Event Packages</h2>
+        <p>Simple, transparent pricing for your perfect event. Custom arrangements available.</p>
+      </div>
+      <div class="packages">
+        <div class="packages-grid">
+          <div class="package-card">
+            <h3>6-Hour Package</h3>
+            <div class="price">₱4,000<small class="small">/ 6 hours</small></div>
+            <p class="duration">Up to 30 guests · All amenities</p>
+            <ul class="package-features">
+              <li><i class="bi bi-check-lg"></i> Full pool & villa access</li>
+              <li><i class="bi bi-check-lg"></i> Shower rooms &amp; tables</li>
+              <li><i class="bi bi-check-lg"></i> Grill &amp; videoke</li>
+              <li><i class="bi bi-check-lg"></i> Garden grounds</li>
+              <li><i class="bi bi-check-lg"></i> Mini-golf course access</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary">Select</a>
+          </div>
+          <div class="package-card popular">
+            <div class="popular-badge">BEST VALUE</div>
+            <h3>10-Hour Package</h3>
+            <div class="price">₱6,000<small class="small">/ 10 hours</small></div>
+            <p class="duration">Up to 30 guests · All amenities</p>
+            <ul class="package-features">
+              <li><i class="bi bi-check-lg"></i> Full pool &amp; villa access</li>
+              <li><i class="bi bi-check-lg"></i> Shower rooms &amp; tables</li>
+              <li><i class="bi bi-check-lg"></i> Grill &amp; videoke</li>
+              <li><i class="bi bi-check-lg"></i> Garden grounds</li>
+              <li><i class="bi bi-check-lg"></i> Mini-golf course access</li>
+              <li><i class="bi bi-check-lg"></i> 4 extra hours for just ₱2,000 more</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary">Select</a>
+          </div>
+          <div class="package-card">
+            <h3>Custom Event</h3>
+            <div class="price">Contact<small class="small"> for pricing</small></div>
+            <p class="duration">Tailored to your needs</p>
+            <ul class="package-features">
+              <li><i class="bi bi-check-lg"></i> Flexible duration</li>
+              <li><i class="bi bi-check-lg"></i> Custom menu options</li>
+              <li><i class="bi bi-check-lg"></i> Special arrangements</li>
+              <li><i class="bi bi-check-lg"></i> Dedicated coordination</li>
+              <li><i class="bi bi-check-lg"></i> Mini-golf course access</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary">Inquire</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Details -->
+      <div class="pricing-details">
+        <div class="section-title">
+          <h2>Pricing Details</h2>
+          <p>All packages include access to all amenities.</p>
+        </div>
+        <div class="details-grid">
+          <div class="detail-card">
+            <div class="detail-amount">₱3,000</div>
+            <div class="detail-label">Security Deposit (refundable after event)</div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-amount">₱500/hr</div>
+            <div class="detail-label">Additional hours beyond your package</div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-amount">₱200/head</div>
+            <div class="detail-label">Over 30 guests (max 30 pax included)</div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-amount" style="color: var(--lounge-green);">None</div>
+            <div class="detail-label">Corkage fee</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────── Testimonials ──────────── -->
+    <section id="testimonials">
+      <div class="section-title">
+        <h2>What Our Guests Say</h2>
+        <p>See why Pablo Paraiso is the go-to venue for unforgettable summer gatherings.</p>
+      </div>
+      <div class="track-wrapper">
+        <button class="scroll-btn left" id="testimonialScrollLeft" aria-label="Scroll left">&#8249;</button>
+        <div class="testimonial-track" id="testimonialTrack">
+        <div class="testimonial">
+          <p class="quote">Our company event was absolutely magical. The pool, the food, the atmosphere — everything was perfect. Our team left feeling recharged and connected.</p>
+          <div class="author">
+            <img src="assets/img/gallery-4.jpg" alt="Guest" class="author-img">
+            <div>
+              <div class="author-name">Maria Santos</div>
+              <div class="author-role">HR Director, TechFlow Inc.</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="quote">We celebrated my 30th birthday here and it was incredible! The pool area, the grill stations, and that sunset view — pure paradise. Will definitely book again.</p>
+          <div class="author">
+            <img src="assets/img/gallery-2.jpg" alt="Guest" class="author-img">
+            <div>
+              <div class="author-name">Paolo and Rica</div>
+              <div class="author-role">Birthday Celebration</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="quote">We hosted our company's summer party here and it was amazing. The space was perfect, the barbecue was top-notch, and our guests are still talking about it. Highly recommended!</p>
+          <div class="author">
+            <img src="assets/img/gallery-1.jpg" alt="Guest" class="author-img">
+            <div>
+              <div class="author-name">James Chen</div>
+              <div class="author-role">Team Lead, Nexus Corp</div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <button class="scroll-btn right" id="testimonialScrollRight" aria-label="Scroll right">&#8250;</button>
+      </div>
+    </section>
+
+    <!-- ──────────── Location + Contact ──────────── -->
+    <section id="contact">
+      <div class="section-title">
+        <h2>Visit Us</h2>
+        <p>Find us along the scenic shores of Laguna de Bay.</p>
+      </div>
+      <div class="location-section">
+        <div class="location-grid">
+          <div class="map-wrapper">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3858.8470116284758!2d121.0249!3d14.4158!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c5b8b0000000%3A0x0!2sPablo%20Paraiso%20Pool%20House!5e0!3m2!1sen!2sph!4v1234567890!5m2!1sen!2sph"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Pablo Paraiso location map"></iframe>
+          </div>
+          <div class="location-details">
+            <h3>Find Us</h3>
+            <div class="detail">
+              <i class="bi bi-geo-alt"></i>
+              <div class="info">
+                <span class="label">Address</span>
+                <span class="value">Lot 12-B, Lakeside Drive, Brgy. Tunasan, Muntinlupa City, Metro Manila, Philippines</span>
+              </div>
+            </div>
+            <div class="detail">
+              <i class="bi bi-telephone"></i>
+              <div class="info">
+                <span class="label">Phone</span>
+                <span class="value">0917 123 4567</span>
+              </div>
+            </div>
+            <div class="detail">
+              <i class="bi bi-envelope"></i>
+              <div class="info">
+                <span class="label">Email</span>
+                <span class="value">hello@pabloparaiso.ph</span>
+              </div>
+            </div>
+            <div class="detail">
+              <i class="bi bi-clock"></i>
+              <div class="info">
+                <span class="label">Hours</span>
+                <span class="value">Monday – Sunday: 9:00 AM – 9:00 PM (by reservation)</span>
+              </div>
+            </div>
+            <div class="detail">
+              <i class="bi bi-facebook"></i>
+              <div class="info">
+                <span class="label">Social</span>
+                <span class="value">@PabloParaiso (Facebook)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ──────────── Booking Form ──────────── -->
+      <div style="margin-top: 3rem;">
+        <div class="section-title">
+          <h2>Book Your Retreat</h2>
+          <p>Fill out the form below and we'll get back to you within 2 hours.</p>
+        </div>
+        <div style="max-width: 800px; margin-inline: auto; background: var(--surface); border-radius: var(--radius); padding: 2.5rem; border: 1px solid var(--border); box-shadow: var(--shadow);">
+          <div id="formSuccess" class="form-success">
+            <i class="bi bi-check-circle-fill"></i>
+            <span id="formSuccessMessage">Thank you! Your booking request has been sent. We will contact you within 2 hours to confirm.</span>
+          </div>
+          <div id="formError" class="form-error" style="display: none;">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span id="formErrorMessage">Your booking could not be confirmed. Please try a different date or time.</span>
+          </div>
+          <form id="bookingForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required placeholder="Juan Dela Cruz">
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required placeholder="juan@example.com">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" required placeholder="0917 123 4567">
+              </div>
+              <div class="form-group">
+                <label for="eventType">Event Type *</label>
+                <select id="eventType" name="eventType" required>
+                  <option value="">Select an option</option>
+                  <option>Pool Party</option>
+                  <option>Team Building</option>
+                  <option>Birthday Celebration</option>
+                  <option>Family Gathering</option>
+                  <option>BBQ / Grill Event</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row three-cols">
+              <div class="form-group">
+                <label for="date">Preferred Date *</label>
+                <input type="date" id="date" name="date" required>
+              </div>
+              <div class="form-group">
+                <label for="timeSlot">Preferred Time *</label>
+                <select id="timeSlot" name="timeSlot" required>
+                  <option value="">Select a time slot</option>
+                  <option value="09:00">Morning (9:00 AM – 1:00 PM)</option>
+                  <option value="13:00">Afternoon (1:00 PM – 5:00 PM)</option>
+                  <option value="14:00">Afternoon (2:00 PM – 6:00 PM)</option>
+                  <option value="17:00">Evening (5:00 PM – 9:00 PM)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="guests">Number of Guests *</label>
+                <input type="number" id="guests" name="guests" required min="1" max="30" placeholder="15">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="package">Preferred Package *</label>
+                <select id="package" name="package" required>
+                  <option value="">Select a package</option>
+                  <option>6-Hour Package (₱4,000)</option>
+                  <option>10-Hour Package (₱6,000)</option>
+                  <option>Custom Event</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="budget">Budget Range</label>
+                <select id="budget" name="budget">
+                  <option value="">Any budget</option>
+                  <option>Below ₱5,000</option>
+                  <option>₱5,000 – ₱7,000</option>
+                  <option>₱7,000 – ₱10,000</option>
+                  <option>Above ₱10,000</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message">Special Requests</label>
+              <textarea id="message" name="message" placeholder="Any special requirements, menu preferences, or questions..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary form-submit">Send Booking Request</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ──────────── Messenger Chat (Meta Customer Chat Plugin) ──────────── -->
+  <!-- The Meta Messenger chat bubble renders at the bottom-right corner of the page.
+       See the "Messenger Chat Plugin" section at the bottom of this file for configuration.
+       On localhost, the bubble does not appear — the page must be on a whitelisted domain. -->
+
+  <!-- ──────────── Back to Top ──────────── -->
+  <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+    <i class="bi bi-arrow-up"></i>
+  </div>
+
+  <!-- ──────────── Footer ──────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="assets/img/logo_transparent.png" alt="Pablo Paraiso Logo" width="88">
+        <span class="footer-logo-text">PABLO <span class="water">PARA</span><span class="sunset">ISO</span></span>
+      </div>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#amenities">Amenities</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#packages">Packages</a>
+        <a href="#contact">Book Now</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/PabloParaiso" target="_blank" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="https://m.me/561017820679235" target="_blank" aria-label="Messenger"><i class="bi bi-messenger"></i></a>
+        <a href="https://wa.me/639171234567" target="_blank" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Pablo Paraiso · All rights reserved. · <a href="https://unsplash.com" target="_blank" style="color: rgba(255,255,255,0.4);">Photos by Unsplash</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle
+    function toggleMobileNav() {
+      const nav = document.getElementById('mobileNav');
+      const burger = document.getElementById('hamburger');
+      nav.classList.toggle('active');
+      burger.classList.toggle('open');
+    }
+
+    // Booking form submission — sends to Google Apps Script backend
+    // Replace GAS_ENDPOINT with your deployed web app URL (see DEPLOYMENT.md)
+    var GAS_ENDPOINT = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var form = this;
+      var formData = new FormData(form);
+      var data = {};
+      formData.forEach(function(value, key) {
+        data[key] = value;
+      });
+
+      var submitBtn = form.querySelector('.form-submit');
+      var originalText = submitBtn.textContent;
+      var successMsg = document.getElementById('formSuccess');
+      var errorMsg = document.getElementById('formError');
+      var successText = document.getElementById('formSuccessMessage');
+      var errorText = document.getElementById('formErrorMessage');
+
+      // Hide messages, show loading state
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Checking Availability...';
+
+      fetch(GAS_ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(result) {
+        if (result.success) {
+          successText.textContent = result.message || successText.textContent;
+          successMsg.style.display = 'flex';
+          errorMsg.style.display = 'none';
+          form.reset();
+          successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(function() {
+            successMsg.style.display = 'none';
+          }, 10000);
+        } else {
+          errorText.textContent = result.message || 'Your booking could not be confirmed. Please try a different date or time.';
+          errorMsg.style.display = 'flex';
+          successMsg.style.display = 'none';
+          errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      })
+      .catch(function(error) {
+        console.error('Booking error:', error);
+        errorText.textContent = 'A network error occurred. Please try again, or message us on Messenger.';
+        errorMsg.style.display = 'flex';
+        successMsg.style.display = 'none';
+        errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      })
+      .finally(function() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      });
+    });
+
+    // Smooth scroll offset for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const headerOffset = 80;
+          const offset = target.offsetTop - headerOffset;
+          window.scrollTo({ top: offset, behavior: 'smooth' });
+        }
+      });
+    });
+    // Back to top button
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('backToTop');
+      if (window.scrollY > 300) {
+        btn.classList.add('show');
+      } else {
+        btn.classList.remove('show');
+      }
+    });
+
+    // ─────────────────────────────────────────────────────────────
+    // Horizontal Auto-Scroll for Gallery & Testimonials
+    // Smooth 60fps scrolling via requestAnimationFrame (no jitter).
+    // Click-drag with momentum/inertia on both desktop (mouse) and mobile (touch).
+    // Auto-scroll pauses on hover, drag, momentum, and brief loop-back.
+    (function() {
+      var SCROLL_SPEED = 1.5;       // pixels per frame (at 60fps)
+      var MOMENTUM_DECAY = 0.94;    // velocity decay factor (longer momentum)
+      var MOMENTUM_THRESHOLD = 0.05; // minimum velocity to trigger momentum
+      var LOOP_PAUSE_MS = 400;      // pause after loop-back before resuming
+
+      function initHorizontalTrack(trackId, leftBtnId, rightBtnId) {
+        var track = document.getElementById(trackId);
+        var btnLeft = document.getElementById(leftBtnId);
+        var btnRight = document.getElementById(rightBtnId);
+        if (!track || !btnLeft || !btnRight) return;
+
+        // Duplicate content for seamless looping (for tracks with few cards)
+        var originalHTML = track.innerHTML;
+        var contentDuplicated = false;
+        if (track.scrollWidth < track.clientWidth * 1.5) {
+          track.innerHTML = originalHTML + originalHTML;
+          contentDuplicated = true;
+        }
+        // Loop-back point: seam (half scrollWidth) for duplicated content,
+        // or natural end (maxScroll) for already-wide tracks like the gallery
+        var loopPoint = contentDuplicated
+          ? track.scrollWidth / 2
+          : (track.scrollWidth - track.clientWidth);
+
+        // State variables
+        var isHovered = false;
+        var isDragging = false;
+        var isMomentum = false;
+        var isLooping = false;
+        var animId = null;
+
+        // Drag state
+        var dragStartX = 0;
+        var dragStartTime = 0;
+        var dragStartScroll = 0;
+        var momentumVel = 0;
+
+        function getCardWidth() {
+          var firstCard = track.querySelector('.gallery-card, .testimonial');
+          if (firstCard) {
+            return firstCard.getBoundingClientRect().width + 24; // width + gap
+          }
+          return 320;
+        }
+
+        function updateButtons() {
+          var maxScroll = track.scrollWidth - track.clientWidth - 2;
+          btnLeft.disabled = track.scrollLeft <= 2;
+          btnRight.disabled = track.scrollLeft >= maxScroll;
+        }
+
+        // ─── Auto-Scroll (jitter-free via requestAnimationFrame) ───
+        function tick() {
+          if (isHovered || isDragging || isMomentum || isLooping) {
+            animId = requestAnimationFrame(tick);
+            return;
+          }
+          if (track.scrollLeft >= loopPoint) {
+            // Loop back — invisible at seam (duplicated content matches at position 0)
+            track.scrollLeft = 0;
+            isLooping = true;
+            setTimeout(function() { isLooping = false; }, LOOP_PAUSE_MS);
+          } else {
+            track.scrollLeft += SCROLL_SPEED;
+          }
+          updateButtons();
+          animId = requestAnimationFrame(tick);
+        }
+
+        // ─── Momentum Drag ───
+        function startDrag(e) {
+          isDragging = true;
+          isMomentum = false;
+          if (animId) cancelAnimationFrame(animId);
+          var point = e.touches ? e.touches[0] : e;
+          dragStartX = point.clientX;
+          dragStartScroll = track.scrollLeft;
+          dragStartTime = performance.now();
+          track.style.cursor = 'grabbing';
+          track.style.userSelect = 'none';
+          track.style.scrollBehavior = 'auto';
+          e.preventDefault();
+        }
+
+        function onDrag(e) {
+          if (!isDragging) return;
+          var point = e.touches ? e.touches[0] : e;
+          var currentX = point.clientX;
+          var delta = dragStartX - currentX;
+          var max = track.scrollWidth - track.clientWidth;
+          track.scrollLeft = Math.max(0, Math.min(max, dragStartScroll + delta));
+          updateButtons();
+          e.preventDefault();
+        }
+
+        function endDrag(e) {
+          if (!isDragging) return;
+          isDragging = false;
+          track.style.cursor = 'grab';
+          track.style.userSelect = '';
+          isHovered = false;  // Allow auto-scroll to resume after drag
+          // Calculate velocity from total drag distance and time
+          var totalMs = performance.now() - dragStartTime;
+          var totalDelta = track.scrollLeft - dragStartScroll;
+          if (totalMs > 0) {
+            // px/frame at 60fps, with 2x sensitivity boost for fast flicks
+            momentumVel = (totalDelta / totalMs) * 32;
+            // Cap to prevent excessive momentum
+            var cap = 80;
+            momentumVel = Math.max(-cap, Math.min(cap, momentumVel));
+          }
+          if (Math.abs(momentumVel) > MOMENTUM_THRESHOLD) {
+            isMomentum = true;
+            animateMomentum();
+          } else {
+            animId = requestAnimationFrame(tick);
+          }
+        }
+
+        function animateMomentum() {
+          if (!isMomentum) return;
+          momentumVel *= MOMENTUM_DECAY;
+          var max = track.scrollWidth - track.clientWidth;
+          track.scrollLeft = Math.max(0, Math.min(max, track.scrollLeft + momentumVel));
+          updateButtons();
+          if (Math.abs(momentumVel) < MOMENTUM_THRESHOLD) {
+            isMomentum = false;
+            track.scrollLeft = Math.round(track.scrollLeft);
+            track.style.scrollBehavior = '';
+            animId = requestAnimationFrame(tick);
+          } else {
+            animId = requestAnimationFrame(animateMomentum);
+          }
+        }
+
+        var cardWidth = getCardWidth();
+
+        // Button click — scroll by one card width
+        btnLeft.addEventListener('click', function() {
+          track.scrollLeft -= cardWidth;
+          updateButtons();
+        });
+        btnRight.addEventListener('click', function() {
+          track.scrollLeft += cardWidth;
+          updateButtons();
+        });
+
+        // Pause auto-scroll on hover (desktop)
+        track.addEventListener('mouseenter', function() { isHovered = true; });
+        track.addEventListener('mouseleave', function() { isHovered = false; });
+
+        // Mouse drag for momentum scrolling (desktop)
+        track.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', onDrag);
+        document.addEventListener('mouseup', endDrag);
+
+        // Touch drag for momentum scrolling (mobile)
+        track.addEventListener('touchstart', startDrag, { passive: false });
+        track.addEventListener('touchmove', onDrag, { passive: false });
+        track.addEventListener('touchend', endDrag);
+        track.addEventListener('touchcancel', endDrag);
+
+        // Wrapper hover — prevents pausing when cursor is on scroll buttons
+        var wrapper = track.parentElement;
+        if (wrapper) {
+          wrapper.addEventListener('mouseenter', function() { isHovered = true; });
+          wrapper.addEventListener('mouseleave', function() { isHovered = false; });
+        }
+
+        // Update card width on resize
+        window.addEventListener('resize', function() {
+          cardWidth = getCardWidth();
+        });
+
+        // Default grab cursor for visual drag feedback
+        track.style.cursor = 'grab';
+        // Start auto-scroll
+        animId = requestAnimationFrame(tick);
+        updateButtons();
+      }
+
+      function initAllTracks() {
+        initHorizontalTrack('galleryTrack', 'galleryScrollLeft', 'galleryScrollRight');
+        initHorizontalTrack('testimonialTrack', 'testimonialScrollLeft', 'testimonialScrollRight');
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAllTracks);
+      } else {
+        initAllTracks();
+      }
+    })();
+  </script>
+
+  <!-- ──────────── Messenger Chat Plugin (Meta Customer Chat) ──────────── -->
+  <!--
+    ─── Configuration ──────────────────────────────
+    To change the connected Facebook Page:
+    1. Find your Page ID: facebook.com/[your-page] → Ctrl+U → search "entity_id"
+       Or: facebook.com/[your-page] → Page → About → "Page ID"
+    2. Edit the FB_PAGE_ID value below (Page IDs are PUBLIC — not secrets)
+
+    Current Page ID: 561017820679235 (PabloParaiso Facebook Page)
+
+    ─── Requirements ───────────────────────────────
+    The plugin ONLY renders on domains whitelisted in:
+      Facebook Page → Settings → General → Messages → "Whitelisted websites"
+    localhost CANNOT be whitelisted (Facebook limitation).
+    Testing on localhost: visit https://m.me/561017820679235 directly.
+
+    The plugin auto-handles: floating bubble bottom-right (desktop + mobile),
+    z-index above all content, no overlap with back-to-top (bottom-LEFT),
+    responsive sizing on all screen sizes. No secrets or tokens in this code.
+  -->
+  <div id="fb-root"></div>
+  <div id="messenger-chat" class="fb-customerchat"
+    attachment_style="rounded"
+    page_id=""
+    theme_color="#0077BE"
+    logged_in_greeting="Hi there! 👋 Welcome to Pablo Paraiso. Message us to start planning your retreat."
+    logged_out_greeting="Hi there! 👋 Welcome to Pablo Paraiso. Message us to start planning your retreat."></div>
+
+  <script>
+    // ─── Facebook Messenger Configuration ─────────────────────────────
+    // Change ONLY this value to connect a different Facebook Page.
+    // Page IDs are PUBLIC information — NOT secrets, safe in frontend.
+    var FB_PAGE_ID = "561017820679235";
+
+    // Apply Page ID to the Customer Chat Plugin div BEFORE SDK initializes
+    var fbChatDiv = document.getElementById('messenger-chat');
+    if (fbChatDiv) {
+      fbChatDiv.setAttribute('page_id', FB_PAGE_ID);
+    }
+
+    // ─── Meta Customer Chat Plugin SDK ────────────────────────────────
+    // Renders the Meta Messenger chat bubble at bottom-right of the page.
+    // The back-to-top button sits at bottom-LEFT — no overlap on any device.
+    window.fbAsyncInit = function() {
+      FB.init({
+        xfbml: true,              // Parse fb-customerchat div → render chat bubble
+        version: 'v18.0'
+      });
+      // Explicitly parse to handle the dynamically-set page_id attribute
+      if (fbChatDiv) {
+        FB.XFBML.parse(fbChatDiv);
+      }
+    };
+    (function(d, s, e) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(e)) return;
+      js = d.createElement(s); js.id = e;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+</body>
+</html>
