@@ -1803,37 +1803,54 @@
     responsive sizing on all screen sizes. No secrets or tokens in this code.
   -->
   <div id="fb-root"></div>
+  <!-- page_id is hardcoded directly in the div (not set via JS) to prevent
+       race conditions where the SDK parses the element before JS runs.
+       Page IDs are PUBLIC information — NOT secrets. -->
   <div id="messenger-chat" class="fb-customerchat"
-    attachment_style="rounded"
-    page_id=""
+    page_id="561017820679235"
     theme_color="#0077BE"
-    logged_in_greeting="Hi there! 👋 Welcome to Pablo Paraiso. Message us to start planning your retreat."
-    logged_out_greeting="Hi there! 👋 Welcome to Pablo Paraiso. Message us to start planning your retreat."></div>
+    attachment_style="rounded"
+    logged_in_greeting="Hi there! Welcome to Pablo Paraiso. Message us to start planning your retreat."
+    logged_out_greeting="Hi there! Welcome to Pablo Paraiso. Message us to start planning your retreat."></div>
+
+  <!-- Fallback: Visible Messenger link (shows only if chat bubble fails to render) -->
+  <a href="https://m.me/561017820679235" target="_blank" id="messenger-fallback"
+     style="display:none;position:fixed;bottom:20px;right:20px;z-index:9998;display:flex;align-items:center;gap:6px;
+            background:#0077BE;color:#fff;padding:10px 14px;border-radius:50px;font-size:14px;
+            font-weight:500;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,0.15);
+            transition:background .2s;">
+    <i class="bi bi-messenger"></i> Message Us
+  </a>
+  <script>
+    // Show the fallback link 2 seconds after page load (if chat bubble hasn't rendered)
+    setTimeout(function() {
+      var fb = document.getElementById('messenger-chat');
+      var fallback = document.getElementById('messenger-fallback');
+      if (fb && fallback && fb.innerHTML === '') {
+        fallback.style.display = 'flex';
+      }
+    }, 2000);
 
   <script>
     // ─── Facebook Messenger Configuration ─────────────────────────────
-    // Change ONLY this value to connect a different Facebook Page.
+    // page_id is now hardcoded directly in the fb-customerchat div above,
+    // which eliminates the race condition where the SDK parses the div
+    // before JavaScript can set the page_id attribute.
     // Page IDs are PUBLIC information — NOT secrets, safe in frontend.
     var FB_PAGE_ID = "561017820679235";
-
-    // Apply Page ID to the Customer Chat Plugin div BEFORE SDK initializes
-    var fbChatDiv = document.getElementById('messenger-chat');
-    if (fbChatDiv) {
-      fbChatDiv.setAttribute('page_id', FB_PAGE_ID);
-    }
 
     // ─── Meta Customer Chat Plugin SDK ────────────────────────────────
     // Renders the Meta Messenger chat bubble at bottom-right of the page.
     // The back-to-top button sits at bottom-LEFT — no overlap on any device.
+    var fbChatDiv = document.getElementById('messenger-chat');
+
     window.fbAsyncInit = function() {
       FB.init({
-        xfbml: true,              // Parse fb-customerchat div → render chat bubble
+        xfbml: true,              // Auto-parse fb-customerchat div → render bubble
         version: 'v18.0'
       });
-      // Explicitly parse to handle the dynamically-set page_id attribute
-      if (fbChatDiv) {
-        FB.XFBML.parse(fbChatDiv);
-      }
+      // Don't hide fallback here — the setTimeout below checks if the bubble
+      // actually rendered (some browsers block it for privacy).
     };
     (function(d, s, e) {
       var js, fjs = d.getElementsByTagName(s)[0];
