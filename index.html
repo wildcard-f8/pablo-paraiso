@@ -1516,11 +1516,13 @@
 
       fetch(GAS_ENDPOINT, {
         method: 'POST',
-        // Use application/x-www-form-urlencoded instead of application/json to
-        // avoid CORS preflight (OPTIONS) requests, which Google Apps Script
-        // does not handle with proper CORS headers and causes browser to block.
-        body: new URLSearchParams(data),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        // Use Content-Type: text/plain instead of application/json to avoid
+        // CORS preflight (OPTIONS) requests. Google Apps Script's OPTIONS
+        // response lacks CORS headers, causing browsers to block the POST.
+        // text/plain is a "simple" content type (no preflight), and the body
+        // is still JSON — the backend's JSON.parse(e.postData.contents) handles it.
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'text/plain' }
       })
       .then(function(response) {
         return response.json();
