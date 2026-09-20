@@ -1847,11 +1847,11 @@
 
     window.fbAsyncInit = function() {
       FB.init({
-        xfbml: true,              // Auto-parse fb-customerchat div → render bubble
-        version: 'v18.0'
+        xfbml: true,
+        version: 'v19.0'
       });
-      // Don't hide fallback here — the setTimeout below checks if the bubble
-      // actually rendered (some browsers block it for privacy).
+      // Explicitly parse all XFBML elements (including fb-customerchat)
+      FB.XFBML.parse();
     };
     (function(d, s, e) {
       var js, fjs = d.getElementsByTagName(s)[0];
