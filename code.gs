@@ -17,7 +17,7 @@
  *
  * USAGE:
  *   POST https://script.google.com/macros/s/{DEPLOYMENT_ID}/exec
- *   Content-Type: application/json
+ *   Content-Type: text/plain (JSON body sent as text/plain to avoid CORS preflight)
  *   Body: { name, email, phone, eventType, date, timeSlot, guests, package, budget, message }
  */
 
@@ -354,6 +354,38 @@ function createCalendarEvent(data, dateStr, timeSlot, durationHours) {
 // ─── Sheets ─────────────────────────────────────────────────────
 
 /**
+ * Ensures the sheet has correct column headers in row 1.
+ * If the sheet was created manually without headers, this inserts them
+ * and shifts existing data down.
+ */
+function ensureSheetHeaders(sheetObj, columns) {
+  if (!sheetObj) return;
+
+  var lastRow = sheetObj.getLastRow();
+  if (lastRow === 0) {
+    // Sheet is empty — add headers directly
+    sheetObj.getRange(1, 1, 1, columns.length).setValues([columns]);
+    return;
+  }
+
+  // Check if first row already has the expected headers
+  var headerValues = sheetObj.getRange(1, 1, 1, columns.length).getValues()[0];
+  var hasHeaders = true;
+  for (var i = 0; i < columns.length; i++) {
+    if (headerValues[i] !== columns[i]) {
+      hasHeaders = false;
+      break;
+    }
+  }
+
+  if (!hasHeaders) {
+    // Insert headers at row 1, shifting existing data down
+    sheetObj.insertRowBefore(1);
+    sheetObj.getRange(1, 1, 1, columns.length).setValues([columns]);
+  }
+}
+
+/**
  * Logs a booking to the Google Sheet.
  */
 function logBooking(data, bookingId, duration, calendarEventId) {
@@ -362,11 +394,13 @@ function logBooking(data, bookingId, duration, calendarEventId) {
     var bookingsSheet = sheet.getSheetByName("Bookings");
 
     if (!bookingsSheet) {
-      // Create the sheet with headers if it doesn't exist
+      // Create the sheet if it doesn't exist
       var newSheet = sheet.insertSheet("Bookings");
-      newSheet.appendRow(BOOKING_COLUMNS);
       bookingsSheet = newSheet;
     }
+
+    // Ensure headers exist (handles sheets created manually without headers)
+    ensureSheetHeaders(bookingsSheet, BOOKING_COLUMNS);
 
     var rowData = [
       new Date(),
@@ -404,10 +438,12 @@ function logActivity(action, status, data, details, clientIP) {
 
     if (!logSheet) {
       var newSheet = sheet.insertSheet("ActivityLog");
-      newSheet.appendRow(LOG_COLUMNS);
-      newSheet.setFrozenRows(1);
       logSheet = newSheet;
     }
+
+    // Ensure headers exist and freeze first row
+    ensureSheetHeaders(logSheet, LOG_COLUMNS);
+    logSheet.setFrozenRows(1);
 
     var rowData = [
       new Date(),
