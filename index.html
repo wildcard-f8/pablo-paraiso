@@ -1845,13 +1845,28 @@
     // The back-to-top button sits at bottom-LEFT — no overlap on any device.
     var fbChatDiv = document.getElementById('messenger-chat');
 
+    console.log('[FB] init start');
     window.fbAsyncInit = function() {
+      console.log('[FB] SDK loaded — calling FB.init');
       FB.init({
         xfbml: true,
         version: 'v19.0'
       });
-      // Explicitly parse all XFBML elements (including fb-customerchat)
-      FB.XFBML.parse();
+      console.log('[FB] FB.init done — parsing XFBML');
+      // Parse the specific customer chat div explicitly
+      var fbDiv = document.getElementById('messenger-chat');
+      if (fbDiv) {
+        FB.XFBML.parse(fbDiv);
+        console.log('[FB] Parsed messenger-chat div');
+        // Check after a short delay
+        setTimeout(function() {
+          console.log('[FB] messenger-chat innerHTML length:', fbDiv.innerHTML.length);
+          console.log('[FB] messenger-chat children count:', fbDiv.children.length);
+          console.log('[FB] messenger-chat outerHTML (first 200 chars):', fbDiv.outerHTML.substring(0, 200));
+        }, 1000);
+      } else {
+        console.log('[FB] messenger-chat div NOT FOUND');
+      }
     };
     (function(d, s, e) {
       var js, fjs = d.getElementsByTagName(s)[0];
