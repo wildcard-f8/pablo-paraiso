@@ -1782,38 +1782,30 @@
     })();
   </script>
 
-  <!-- ──────────── Messenger Chat Plugin (Meta Customer Chat) ──────────── -->
+  <!-- --Messenger Chat Plugin (Meta Customer Chat) -->
   <!--
-    ─── Configuration ──────────────────────────────
     To change the connected Facebook Page:
-    1. Find your Page ID: facebook.com/[your-page] → Ctrl+U → search "entity_id"
-       Or: facebook.com/[your-page] → Page → About → "Page ID"
-    2. Edit the FB_PAGE_ID value below (Page IDs are PUBLIC — not secrets)
+    1. Find your Page ID: facebook.com/[your-page] -> Ctrl+U -> search "entity_id"
+       Or: facebook.com/[your-page] -> Page -> About -> "Page ID"
+    2. Edit the page_id value below (Page IDs are PUBLIC - not secrets)
 
-    Current Page ID: 561017820679235 (PabloParaiso Facebook Page)
+    Current Page ID: 561017820679235
 
-    ─── Requirements ───────────────────────────────
-    The plugin ONLY renders on domains whitelisted in:
-      Facebook Page → Settings → General → Messages → "Whitelisted websites"
-    localhost CANNOT be whitelisted (Facebook limitation).
-    Testing on localhost: visit https://m.me/561017820679235 directly.
-
-    The plugin auto-handles: floating bubble bottom-right (desktop + mobile),
-    z-index above all content, no overlap with back-to-top (bottom-LEFT),
-    responsive sizing on all screen sizes. No secrets or tokens in this code.
+    Requirements:
+    - Domain whitelisted: Facebook Page -> Settings -> Messages -> "Whitelisted websites"
+      OR Meta Business Suite -> Chat Plugin -> Trusted domains
+    - Visitor must be LOGGED INTO FACEBOOK
+    - Third-party cookies must be allowed (Brave/Safari/Firefox may block)
+    - localhost CANNOT be whitelisted - test on the live site only
   -->
   <div id="fb-root"></div>
-  <!-- page_id is hardcoded directly in the div (not set via JS) to prevent
-       race conditions where the SDK parses the element before JS runs.
-       Page IDs are PUBLIC information — NOT secrets. -->
   <div id="messenger-chat" class="fb-customerchat"
     page_id="561017820679235"
     theme_color="#0077BE"
-    attachment_style="rounded"
     logged_in_greeting="Hi there! Welcome to Pablo Paraiso. Message us to start planning your retreat."
     logged_out_greeting="Hi there! Welcome to Pablo Paraiso. Message us to start planning your retreat."></div>
 
-  <!-- Fallback: Visible Messenger link (shows only if chat bubble fails to render) -->
+  <!-- Fallback: Message Us button -->
   <a href="https://m.me/561017820679235" target="_blank" id="messenger-fallback"
      style="display:none;position:fixed;bottom:20px;right:20px;z-index:9998;display:flex;align-items:center;gap:6px;
             background:#0077BE;color:#fff;padding:10px 14px;border-radius:50px;font-size:14px;
@@ -1821,8 +1813,8 @@
             transition:background .2s;">
     <i class="bi bi-messenger"></i> Message Us
   </a>
+
   <script>
-    // Show the fallback link 2 seconds after page load (if chat bubble hasn't rendered)
     setTimeout(function() {
       var fb = document.getElementById('messenger-chat');
       var fallback = document.getElementById('messenger-fallback');
@@ -1833,46 +1825,14 @@
   </script>
 
   <script>
-    // ─── Facebook Messenger Configuration ─────────────────────────────
-    // page_id is now hardcoded directly in the fb-customerchat div above,
-    // which eliminates the race condition where the SDK parses the div
-    // before JavaScript can set the page_id attribute.
-    // Page IDs are PUBLIC information — NOT secrets, safe in frontend.
-    var FB_PAGE_ID = "561017820679235";
-
-    // ─── Meta Customer Chat Plugin SDK ────────────────────────────────
-    // Renders the Meta Messenger chat bubble at bottom-right of the page.
-    // The back-to-top button sits at bottom-LEFT — no overlap on any device.
-    var fbChatDiv = document.getElementById('messenger-chat');
-
-    console.log('[FB] init start');
     window.fbAsyncInit = function() {
-      console.log('[FB] SDK loaded — calling FB.init');
-      FB.init({
-        xfbml: true,
-        version: 'v19.0'
-      });
-      console.log('[FB] FB.init done — parsing XFBML');
-      // Parse the specific customer chat div explicitly
-      var fbDiv = document.getElementById('messenger-chat');
-      if (fbDiv) {
-        FB.XFBML.parse(fbDiv);
-        console.log('[FB] Parsed messenger-chat div');
-        // Check after a short delay
-        setTimeout(function() {
-          console.log('[FB] messenger-chat innerHTML length:', fbDiv.innerHTML.length);
-          console.log('[FB] messenger-chat children count:', fbDiv.children.length);
-          console.log('[FB] messenger-chat outerHTML (first 200 chars):', fbDiv.outerHTML.substring(0, 200));
-        }, 1000);
-      } else {
-        console.log('[FB] messenger-chat div NOT FOUND');
-      }
+      FB.init({ xfbml: true, version: 'v19.0' });
     };
     (function(d, s, e) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(e)) return;
       js = d.createElement(s); js.id = e;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
   </script>
