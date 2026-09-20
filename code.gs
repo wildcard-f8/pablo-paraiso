@@ -11,7 +11,7 @@
  *   1. Create a Google Sheet with tabs: "Bookings" and "ActivityLog"
  *   2. Create a Google Calendar (or use your primary one)
  *   3. Paste this code into script.google.com
- *   4. Set SHEET_ID and CALENDAR_ID below
+ *   4. Configure SHEET_ID and CALENDAR_ID in Script Properties
  *   5. Deploy → New Deployment → Web App → POST → "Anyone"
  *   6. Copy the web app URL and paste into index.html
  *
@@ -22,13 +22,40 @@
  */
 
 // ─── Configuration ───────────────────────────────────────────────
+//
+// Sheet ID and Calendar ID are read from Google Apps Script Properties
+// (PropertiesService) so they are NEVER stored in source code or git history.
+//
+//   How to set them (once, in the Apps Script editor):
+//     1. Open the script in script.google.com
+//     2. Project Settings → Script Properties
+//     3. Add:  SHEET_ID   =  your-spreadsheet-id
+//              CALENDAR_ID =  your-calendar-id@example.com  (or "primary")
+//
+// Or set them at runtime via:
+//   PropertiesService.getScriptProperties().setProperty('SHEET_ID', '...');
+//   PropertiesService.getScriptProperties().setProperty('CALENDAR_ID', '...');
 
-// Replace with your Google Sheet ID (from the URL: docs.google.com/spreadsheets/d/SHEET_ID/edit)
-var SHEET_ID = "YOUR_SHEET_ID_HERE";
+/**
+ * Reads the configured Google Sheet ID from script properties.
+ * @return {string}
+ */
+function getSheetId() {
+  var id = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  if (!id) {
+    throw new Error('SHEET_ID script property is not set. Configure it in Project Settings → Script Properties.');
+  }
+  return id;
+}
 
-// Replace with your Google Calendar ID (from Settings → Calendars → Calendar ID)
-// Use "primary" for your main calendar, or the ID of a dedicated booking calendar
-var CALENDAR_ID = "primary";
+/**
+ * Reads the configured Google Calendar ID from script properties.
+ * @return {string}
+ */
+function getCalendarId() {
+  var id = PropertiesService.getScriptProperties().getProperty('CALENDAR_ID') || 'primary';
+  return id;
+}
 
 // Package durations (in hours) — must match the packages on the website
 var PACKAGE_DURATIONS = {
@@ -239,7 +266,7 @@ function validateInput(data) {
  */
 function checkCalendarAvailability(dateStr, timeSlot, durationHours) {
   try {
-    var calendar = CalendarApp.getCalendarById(CALENDAR_ID);
+    var calendar = CalendarApp.getCalendarById(getCalendarId());
     if (!calendar) {
       return { available: false, reason: "Calendar not configured." };
     }
@@ -279,7 +306,7 @@ function checkCalendarAvailability(dateStr, timeSlot, durationHours) {
  */
 function findAvailableSlot(dateStr, durationHours) {
   try {
-    var calendar = CalendarApp.getCalendarById(CALENDAR_ID);
+    var calendar = CalendarApp.getCalendarById(getCalendarId());
     var baseDate = new Date(dateStr);
 
     // Try the next 7 days
@@ -316,7 +343,7 @@ function findAvailableSlot(dateStr, durationHours) {
  */
 function createCalendarEvent(data, dateStr, timeSlot, durationHours) {
   try {
-    var calendar = CalendarApp.getCalendarById(CALENDAR_ID);
+    var calendar = CalendarApp.getCalendarById(getCalendarId());
     if (!calendar) {
       return { success: false, error: "Calendar not configured." };
     }
@@ -390,7 +417,7 @@ function ensureSheetHeaders(sheetObj, columns) {
  */
 function logBooking(data, bookingId, duration, calendarEventId) {
   try {
-    var sheet = SpreadsheetApp.openById(SHEET_ID);
+    var sheet = SpreadsheetApp.openById(getSheetId());
     var bookingsSheet = sheet.getSheetByName("Bookings");
 
     if (!bookingsSheet) {
@@ -433,7 +460,7 @@ function logBooking(data, bookingId, duration, calendarEventId) {
  */
 function logActivity(action, status, data, details, clientIP) {
   try {
-    var sheet = SpreadsheetApp.openById(SHEET_ID);
+    var sheet = SpreadsheetApp.openById(getSheetId());
     var logSheet = sheet.getSheetByName("ActivityLog");
 
     if (!logSheet) {
@@ -495,8 +522,8 @@ function getTimeSlots() {
 function healthCheck() {
   return {
     status: "ok",
-    sheetId: SHEET_ID,
-    calendarId: CALENDAR_ID,
+    sheetId: getSheetId(),
+    calendarId: getCalendarId(),
     timeSlots: TIME_SLOTS.length,
     packages: Object.keys(PACKAGE_DURATIONS),
     timestamp: new Date().toISOString()
