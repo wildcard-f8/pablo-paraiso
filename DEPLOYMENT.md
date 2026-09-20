@@ -1,6 +1,36 @@
-# Deployment Guide — Booking System Backend
+# Deployment Guide — Pablo Paraiso Booking System
 
-This guide walks you through setting up the Google Apps Script (GAS) backend that powers the Pablo Paraiso booking system. Following this guide enables **real calendar availability checking**, **double-booking prevention**, and **full activity logging**.
+## Architecture
+
+The Pablo Paraiso website (`pablo-paraiso/`) is a static site hosted on
+**GitHub Pages**. The booking form submits directly to the **management
+app's** Google Apps Script backend (`pablo-paraiso-management/`), so every
+website booking appears instantly in the management dashboard, the
+**Bookings** table, the **Calendar**, and the **ActivityLog**.
+
+```
+Public website (GitHub Pages)
+   │  booking form → POST /exec?action=submitPublicBooking
+   ↓
+Management App GAS backend (script.google.com)
+   │  → writes to the SAME Google Sheet
+   │  → creates events on the configured CALENDAR_ID
+   ↓
+Google Sheet + Google Calendar
+   │  read by the management app frontend (also on GitHub Pages)
+   ↓
+pablo-paraiso-management dashboard
+```
+
+> **No separate backend deployment is needed for the public site.**
+> The public site's own `code.gs` is kept for reference but is **no longer
+> used** for booking submissions — the form now posts to the management app's
+> GAS endpoint. See [Setting up the Integration](#step-1-set-up-the-integration)
+> below.
+
+This guide walks you through connecting the management app's backend to
+the website's booking form, enabling **real calendar availability checking**,
+**double-booking prevention**, and **full activity logging**.
 
 ---
 
@@ -13,99 +43,96 @@ This guide walks you through setting up the Google Apps Script (GAS) backend tha
 
 ---
 
-## Step 1: Create the Google Sheet
+## Step 1: Set up the Integration
 
-1. Go to [sheets.google.com](https://sheets.google.com) and create a new spreadsheet.
-2. **Rename it** to "Pablo Paraiso — Bookings".
-3. **Create two tabs** (bottom-left):
-   - **Bookings** — for confirmed reservations
-   - **ActivityLog** — for all request/failures
+The website booking form now submits to the **management app's** GAS backend.
+You need to:
 
-   *Your Google Sheet will automatically populate the column headers on the first
-   booking request. No manual setup is needed — the script creates them.*
+1. Deploy the management app's `code.gs` as a web app (see "Management App
+   Backend" below).
+2. Set the `SHEET_ID`, `CALENDAR_ID`, and `AUTHORIZED_USERS` script properties
+   in the **management app's** GAS project.
+3. Copy the management app's `/exec` URL into this site's `index.html`.
 
-4. **Copy the Sheet ID** from the URL:
-   ```
-   https://docs.google.com/spreadsheets/d/1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789/edit
-                                        ^---------------------------^
-                                            This is your SHEET_ID
-   ```
+## Management App Backend
 
----
+### 1. Create / open the management app's GAS project
 
-## Step 2: Set Up the Google Calendar
+1. Go to [script.google.com](https://script.google.com) → **New Project**.
+2. Paste the contents of `pablo-paraiso-management/backend/code.gs` into the
+   editor.
+3. Set three **Script Properties** (Project Settings ⚙ → Script properties):
+
+```
+SHEET_ID      = 1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789  (your management Google Sheet)
+CALENDAR_ID   = c_1234567890@group.calendar.google.com  (NOT your default — your Pablo Paraiso calendar)
+AUTHORIZED_USERS = your-email@gmail.com, manager@retreat.com  (for the management app's auth)
+```
+
+> If `CALENDAR_ID` is omitted or set to `"primary"`, the backend falls back
+> to your default personal calendar. To use a *different* calendar, create a
+> dedicated one in Google Calendar and paste its ID here.
+
+### 2. Create the Google Sheet (management app)
+
+1. Create a Google Sheet with tabs: `Finances`, `Customers`, `Bookings`,
+   `Supplies`, `Properties`, `Config`, `ActivityLog`, `WebBookings`.
+2. Copy its ID from the URL into the `SHEET_ID` script property.
+3. Or — run `seedDatabase()` from the Apps Script editor (▶ Run) to create
+   everything automatically.
+
+### 3. Create the Google Calendar
 
 1. Go to [calendar.google.com](https://calendar.google.com).
-2. **Create a new calendar** called "Pablo Paraiso Bookings" (recommended — keeps
-   booking events separate from personal events).
-3. **Share the calendar** with your team (optional — Settings → Share with specific people).
-4. **Copy the Calendar ID** from Settings → Settings → Access permissions:
-   - Look for "Calendar ID" (usually your email, or the calendar's unique ID).
-   - If you use a dedicated calendar, the ID looks like `c_1234567890@group.calendar.google.com`.
-   - If you use your primary calendar, use `"primary"`.
+2. **Create a new calendar** called "Pablo Paraiso Bookings" (recommended —
+   keeps booking events separate from your personal calendar).
+3. **Copy the Calendar ID** from Settings → Settings → Access permissions:
+   - Dedicated calendar ID looks like: `c_1234567890@group.calendar.google.com`
+   - Personal calendar ID is usually your email address
+   - Or use `"primary"` for your default calendar (not recommended for this use case)
+4. **Paste it** into the `CALENDAR_ID` script property (from Step 1 above).
+5. **Share the calendar** with your team if needed (Settings → Share with
+   specific people → give "Make changes to events" permission).
 
----
-
-## Step 3: Create the Google Apps Script Project
-
-1. Go to [script.google.com](https://script.google.com) and click **New Project**.
-2. **Delete** the default `Code.gs` content.
-3. **Copy and paste** the contents of `code.gs` (located in this project folder) into the editor.
-4. **Update the configuration constants** at the top of `code.gs`:
-
-   ```javascript
-   var SHEET_ID = "1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789";  // ← Your Sheet ID
-   var CALENDAR_ID = "primary";  // ← Or your dedicated calendar ID
-   ```
-
-5. **Save** the project (Ctrl+S) and give it a name like "Pablo Paraiso Booking Backend".
-
----
-
-## Step 4: Deploy as a Web App
+### 4. Deploy as a Web App
 
 1. In the Apps Script editor, click **Deploy** → **New deployment**.
 2. Select **Web app** as the deployment type.
 3. Configure the settings:
-   - **Execute as**: "Me" (your Google account)
-   - **Who has access**: "Anyone" (this allows website visitors to submit bookings)
+   - **Execute as**: "Me" (your Google account — this is who owns the Sheet + Calendar)
+   - **Who has access**: "Anyone, even anonymous" (this allows website visitors
+     to submit bookings via the public `submitPublicBooking` endpoint)
 4. Click **Deploy**.
-5. **Authorize the script** — this step is critical and must be done manually:
-   - In the Apps Script editor, select `doGet` from the **functions dropdown** (top toolbar)
-   - Click the **Run** button (▶ icon)
-   - The authorization dialog will appear — click **Review Permissions**
-   - Select your Google account
-   - You may see "This app isn't verified" — click **Advanced** → **Go to [project name] (unsafe)**
-   - Grant access to:
-     - **Google Calendar** (read events, create events)
-     - **Google Sheets** (read/write data)
-   - Click **Allow**
-   - **Note**: You will only need to do this once per Google account. The authorization
-     prompt does NOT appear during deployment — it appears only when the script runs.
-6. After deployment, you will receive a **Web app URL** that looks like:
+5. **Authorize the script** — this must be done manually:
+   - Select `seedDatabase` from the **functions dropdown** (top toolbar)
+   - Click **▶ Run** → review and grant permissions
+   - Authorize Google Calendar (read/write), Google Sheets (read/write)
+   - Click **Allow**. This is a one-time setup per Google account.
+6. After deployment, copy the **Web app URL**:
    ```
    https://script.google.com/macros/s/AKfy8aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567/exec
    ```
 
 ---
 
-## Step 5: Configure the Frontend
+## Step 2: Update the Website's Endpoint URL
 
-1. Copy the **Web app URL** from Step 4.
-2. Open `index.html` in your project.
-3. Replace the placeholder URL:
-
-   ```javascript
-   var GAS_ENDPOINT = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
-   ```
-
-   With your actual URL:
+1. Copy the **Web app URL** from the management app deployment above.
+2. Open `pablo-paraiso/index.html` in an editor.
+3. Replace `MANAGEMENT_SCRIPT_ID` with your actual GAS script ID
+   (the long alphanumeric string between `/s/` and `/exec`):
 
    ```javascript
-   var GAS_ENDPOINT = "https://script.google.com/macros/s/AKfy8aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567/exec";
+   // OLD (placeholder):
+   var GAS_ENDPOINT = "https://script.google.com/macros/s/MANAGEMENT_SCRIPT_ID/exec?action=submitPublicBooking";
+
+   // NEW (yours):
+   var GAS_ENDPOINT = "https://script.google.com/macros/s/AKfy8aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567/exec?action=submitPublicBooking";
    ```
 
-4. Save the file.
+4. The `?action=submitPublicBooking` suffix is **required** — it tells the
+   management backend to use the public (no-auth) booking handler.
+5. Save and push to GitHub — the site redeploys to GitHub Pages automatically.
 
 ---
 
@@ -175,13 +202,10 @@ Every single interaction is logged in the **ActivityLog** tab of your Google She
 
 ### "TypeError: output.setHeader is not a function"
 
-- This error occurs when `createJsonResponse` tries to call `setHeader()` on a
-  `TextOutput` object returned by `ContentService.createTextOutput()`.
-  That method does not exist on `TextOutput`.
-- **Fix**: Ensure you are using the latest `code.gs` from this repository.
-  The `createJsonResponse` function should NOT call `setHeader()`.
-  Google Apps Script web apps handle CORS automatically when deployed with
-  "Anyone" access — manual header setting is unnecessary.
+This was an issue in the old public-site `code.gs`. The management app's
+backend uses `sendJson()` which wraps every `setHeader()` call in try-catch,
+so this error should not occur. If it does, ensure you are using the latest
+`backend/code.gs` from the management app repo.
 
 ### Calendar checks are slow (3+ seconds)
 - Google Apps Script has a 6-minute execution limit, but individual API calls may take
@@ -193,9 +217,11 @@ Every single interaction is logged in the **ActivityLog** tab of your Google She
 ## Files in This Project
 
 ```
-Pablo Paraiso/
-├── index.html              # Main website (static)
-├── code.gs                 # Google Apps Script backend
+pablo-paraiso/
+├── index.html              # Main website (static, GitHub Pages)
+├── code.gs                 # [DEPRECATED] Standalone backend — no longer used for bookings.
+│                            # The booking form now posts to the MANAGEMENT APP's
+│                            # GAS backend (pablo-paraiso-management/backend/code.gs).
 ├── DEPLOYMENT.md           # This guide
 ├── README.md               # Project documentation
 ├── .gitignore              # Prevents committing secrets
@@ -203,20 +229,29 @@ Pablo Paraiso/
     └── img/                # All images (Unsplash + custom SVG)
 ```
 
+**The management app** (`pablo-paraiso-management/`) contains the active
+backend (`backend/code.gs`), frontend (`js/`, `css/`), and its own
+`README.md` with the full API contract.
+
 ---
 
 ## Security Notes
 
-- The GAS web app URL is effectively public (anyone can POST to it). Input validation
-  in `code.gs` prevents malformed data.
-- The Google Sheet and Calendar are protected by your Google account's permissions.
-- The `.gitignore` file prevents accidental commits of `.env`, `.pem`, `secrets.json`,
-  etc.
-|- The GAS endpoint URL should NOT be treated as a secret — it is loaded client-side
-  in `index.html`.
-|- The Facebook Page ID (`FB_PAGE_ID` in `index.html`) is PUBLIC information displayed
-  on your Facebook Page — it is NOT a secret and safe to include in frontend code.
-  No API keys, access tokens, or passwords are exposed.
+- The management app's GAS web app URL is effectively public (the
+  `submitPublicBooking` endpoint accepts unauthenticated POSTs for website
+  form submissions). Input validation in `code.gs` prevents malformed data.
+- All other endpoints (dashboard, bookings, customers, etc.) require a
+  valid GIS token verified against Google's tokeninfo endpoint, plus the
+  user's email must be on the `AUTHORIZED_USERS` allow-list.
+- The Google Sheet and Calendar are protected by your Google account's
+  permissions. Only the script owner ("Me") can write to them.
+- The GAS endpoint URL should NOT be treated as a secret — it is loaded
+  client-side in `index.html`.
+- The Facebook Page ID (`FB_PAGE_ID` in `index.html`) is PUBLIC information
+  displayed on your Facebook Page — it is NOT a secret and safe to include
+  in frontend code.
+- No API keys, access tokens, or passwords are exposed in client-side code.
+- No API keys, access tokens, or passwords are exposed in client-side code.
 
 ---
 

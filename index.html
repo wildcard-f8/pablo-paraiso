@@ -1487,9 +1487,27 @@
       burger.classList.toggle('open');
     }
 
-    // Booking form submission — sends to Google Apps Script backend
-    // Replace GAS_ENDPOINT with your deployed web app URL (see DEPLOYMENT.md)
-    var GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxqOH47IZulWwUTvH3YEGHNA2WsRxY9u5Yn85aZBaQWQb_f9XisVOT-ykXuo2mTkpbQ/exec";
+    // ─── Booking Form Submission ─────────────────────────────
+    //
+    // Submissions go to the MANAGEMENT APP backend (pablo-paraiso-management),
+    // so every website booking appears instantly in:
+    //   • the dashboard stats (Total Revenue, booking count, etc.)
+    //   • the Bookings table in the management web app
+    //   • the configured CALENDAR_ID (NOT your default personal calendar)
+    //
+    // The management app exposes a public endpoint at:
+    //   POST https://script.google.com/macros/s/MANAGEMENT_SCRIPT_ID/exec?action=submitPublicBooking
+    // No auth token required — the action bypasses requireAuth() in doPost().
+    //
+    // ── How to find your management GAS /exec URL ──────────────
+    // 1. Go to script.google.com
+    // 2. Open your management-app script project
+    // 3. Click "Deploy" → "Manage deployments" → "Web app"
+    // 4. Copy the Web app URL — it looks like:
+    //    https://script.google.com/macros/s/AKfycbx.../exec
+    // 5. Paste it below (replace the placeholder).
+    // ──────────────────────────────────────────────────────────
+    var GAS_ENDPOINT = "https://script.google.com/macros/s/MANAGEMENT_SCRIPT_ID/exec?action=submitPublicBooking";
 
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
