@@ -2,9 +2,9 @@
 
 ## Architecture
 
-The Pablo Paraiso website (`pablo-paraiso/`) is a static site hosted on
+The Pablo Paraiso website (`Website/`) is a static site hosted on
 **GitHub Pages**. The booking form submits directly to the **management
-app's** Google Apps Script backend (`pablo-paraiso-management/`), so every
+app's** Google Apps Script backend (`Web App/`), so every
 website booking appears instantly in the management dashboard, the
 **Bookings** table, the **Calendar**, and the **ActivityLog**.
 
@@ -19,7 +19,7 @@ Management App GAS backend (script.google.com)
 Google Sheet + Google Calendar
    │  read by the management app frontend (also on GitHub Pages)
    ↓
-pablo-paraiso-management dashboard
+Web App dashboard
 ```
 
 > **No separate backend deployment is needed for the public site.**
@@ -59,7 +59,7 @@ You need to:
 ### 1. Create / open the management app's GAS project
 
 1. Go to [script.google.com](https://script.google.com) → **New Project**.
-2. Paste the contents of `pablo-paraiso-management/backend/code.gs` into the
+2. Paste the contents of `Web App/backend/code.gs` into the
    editor.
 3. Set three **Script Properties** (Project Settings ⚙ → Script properties):
 
@@ -118,7 +118,7 @@ AUTHORIZED_USERS = your-email@gmail.com, manager@retreat.com  (for the managemen
 ## Step 2: Update the Website's Endpoint URL
 
 1. Copy the **Web app URL** from the management app deployment above.
-2. Open `pablo-paraiso/index.html` in an editor.
+2. Open `Website/index.html` in an editor.
 3. Replace `MANAGEMENT_SCRIPT_ID` with your actual GAS script ID
    (the long alphanumeric string between `/s/` and `/exec`):
 
@@ -217,11 +217,11 @@ so this error should not occur. If it does, ensure you are using the latest
 ## Files in This Project
 
 ```
-pablo-paraiso/
+Website/
 ├── index.html              # Main website (static, GitHub Pages)
 ├── code.gs                 # [DEPRECATED] Standalone backend — no longer used for bookings.
 │                            # The booking form now posts to the MANAGEMENT APP's
-│                            # GAS backend (pablo-paraiso-management/backend/code.gs).
+│                            # GAS backend (Web App/backend/code.gs).
 ├── DEPLOYMENT.md           # This guide
 ├── README.md               # Project documentation
 ├── .gitignore              # Prevents committing secrets
@@ -229,7 +229,7 @@ pablo-paraiso/
     └── img/                # All images (Unsplash + custom SVG)
 ```
 
-**The management app** (`pablo-paraiso-management/`) contains the active
+**The management app** (`Web App/`) contains the active
 backend (`backend/code.gs`), frontend (`js/`, `css/`), and its own
 `README.md` with the full API contract.
 

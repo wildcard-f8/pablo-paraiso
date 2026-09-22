@@ -79,7 +79,7 @@ http://localhost:8000
 ## File Structure
 
 ```
-Pablo Paraiso/
+Website/
 ├── index.html          # Main website (single-page)
 ├── assets/
 │   └── img/
