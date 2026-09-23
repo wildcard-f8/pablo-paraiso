@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const publicPath = '/pablo-paraiso/';
+const publicPath = process.env.PUBLIC_BASE_URL || 'http://127.0.0.1:4173/';
 const managementPath = '/pablo-paraiso-management/';
 
 async function gotoPage(page, path) {
