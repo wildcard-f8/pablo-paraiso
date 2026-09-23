@@ -23,6 +23,8 @@ dist/
 build/
 .cache/
 *.log
+test-results/
+playwright-report/
 
 # Sensitive Credentials (extra safety — never commit these)
 secrets.json
