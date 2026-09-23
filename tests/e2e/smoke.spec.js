@@ -63,6 +63,20 @@ test.describe('management app unauthenticated shell', () => {
     await expect(page.locator('#authGateBtn')).toBeVisible();
   });
 
+  test('does not fetch protected dashboard data before sign-in', async ({ page }) => {
+    const protectedRequests = [];
+    page.on('request', request => {
+      if (/action=get(Finances|Bookings|Supplies|Customers)/.test(request.url())) {
+        protectedRequests.push(request.url());
+      }
+    });
+    await gotoPage(page, managementPath);
+    await expect(page.locator('#authGateBtn')).toBeVisible();
+    await page.waitForTimeout(3_000);
+    expect(protectedRequests).toHaveLength(0);
+    await expect(page.locator('.auth-required-page')).toBeVisible();
+  });
+
   test('exposes the theme control before authentication', async ({ page }) => {
     await gotoPage(page, managementPath);
     await expect(page.locator('#themeToggle')).toBeVisible();
