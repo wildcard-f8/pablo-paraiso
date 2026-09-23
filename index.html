@@ -1362,6 +1362,10 @@
             <span id="formErrorMessage">Your booking could not be confirmed. Please try a different date or time.</span>
           </div>
           <form id="bookingForm">
+            <div class="form-group" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+              <label for="website">Website</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
             <div class="form-row">
               <div class="form-group">
                 <label for="name">Full Name *</label>
@@ -1509,7 +1513,11 @@
     // ──────────────────────────────────────────────────────────
     var GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbzfgSj6RXHCUDg8_6qStQM4IoMURxpMVGNqPv0rKBIVMLgDO_WpWZbg1xVgahTRLrFP/exec?action=submitPublicBooking";
 
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    var bookingForm = document.getElementById('bookingForm');
+    var bookingDate = document.getElementById('date');
+    if (bookingDate) bookingDate.min = new Date().toISOString().split('T')[0];
+
+    bookingForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
       var form = this;
@@ -1518,6 +1526,10 @@
       formData.forEach(function(value, key) {
         data[key] = value;
       });
+      data.idempotencyKey = form.dataset.idempotencyKey || ((window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : String(Date.now()) + '-' + Math.random().toString(36).slice(2));
+      form.dataset.idempotencyKey = data.idempotencyKey;
 
       var submitBtn = form.querySelector('.form-submit');
       var originalText = submitBtn.textContent;
@@ -1551,6 +1563,7 @@
           successMsg.style.display = 'flex';
           errorMsg.style.display = 'none';
           form.reset();
+          delete form.dataset.idempotencyKey;
           successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
           setTimeout(function() {
             successMsg.style.display = 'none';

@@ -76,7 +76,7 @@ AUTHORIZED_USERS = your-email@gmail.com, manager@retreat.com  (for the managemen
 ### 2. Create the Google Sheet (management app)
 
 1. Create a Google Sheet with tabs: `Finances`, `Customers`, `Bookings`,
-   `Supplies`, `Properties`, `Config`, `ActivityLog`, `WebBookings`.
+   `Supplies`, `Config`, `ActivityLog`, and `WebBookings`.
 2. Copy its ID from the URL into the `SHEET_ID` script property.
 3. Or — run `seedDatabase()` from the Apps Script editor (▶ Run) to create
    everything automatically.

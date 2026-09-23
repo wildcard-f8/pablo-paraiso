@@ -1,3 +1,8 @@
+/* DEPRECATED REFERENCE ONLY
+ * Production bookings are handled by Web App/backend/Code.js.
+ * This file is retained only for historical reference and must not be deployed.
+ */
+
 /**
  * Pablo Paraiso — Booking System Backend (Google Apps Script)
  *
