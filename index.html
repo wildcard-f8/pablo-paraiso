@@ -1515,7 +1515,17 @@
 
     var bookingForm = document.getElementById('bookingForm');
     var bookingDate = document.getElementById('date');
-    if (bookingDate) bookingDate.min = new Date().toISOString().split('T')[0];
+    function localDateISO() {
+      var now = new Date();
+      var month = String(now.getMonth() + 1).padStart(2, '0');
+      var day = String(now.getDate()).padStart(2, '0');
+      return now.getFullYear() + '-' + month + '-' + day;
+    }
+    function refreshBookingDateMinimum() {
+      if (bookingDate) bookingDate.min = localDateISO();
+    }
+    refreshBookingDateMinimum();
+    document.addEventListener('visibilitychange', refreshBookingDateMinimum);
 
     bookingForm.addEventListener('submit', function(e) {
       e.preventDefault();
